@@ -1,13 +1,11 @@
 import sys
 from datetime import datetime
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Text
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
-from sqlalchemy import create_engine
-
-Base = declarative_base()
-
-class User(Base):
+from flask_login import UserMixin
+from flaskblog.database import Base, session, engine, init_db
+    
+class User(Base, UserMixin):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
     username = Column(String(20), unique=True, nullable=False)
@@ -30,6 +28,4 @@ class Post(Base):
 
     def __repr__(self):
         return "Post('{}', '{}')".format(self.title, self.date_posted)
-
-engine = create_engine('sqlite:///flaskblog/site.db')
-Base.metadata.create_all(engine)
+    
