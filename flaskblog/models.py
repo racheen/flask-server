@@ -1,5 +1,4 @@
 import sys
-# from firebase_alchemy.manager import Adaptor
 from datetime import datetime
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Text
 from sqlalchemy.ext.declarative import declarative_base
@@ -7,7 +6,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
 
 Base = declarative_base()
-# adaptor = Adaptor(session=sql_session_reference, firepath='https://[project_name].firebaseio.com')
 
 class User(Base):
     __tablename__ = 'user'
@@ -33,5 +31,5 @@ class Post(Base):
     def __repr__(self):
         return "Post('{}', '{}')".format(self.title, self.date_posted)
 
-engine = create_engine('sqlite:///site2.db')
+engine = create_engine('sqlite:///flaskblog/site.db')
 Base.metadata.create_all(engine)
