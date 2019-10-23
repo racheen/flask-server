@@ -1,10 +1,12 @@
 import sys
 from datetime import datetime
+from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Text
 from sqlalchemy.orm import relationship
 from flask_login import UserMixin
+from config import SECRET_KEY
 from flaskblog.database import Base, session, engine, init_db
-    
+
 class User(Base, UserMixin):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
@@ -13,6 +15,19 @@ class User(Base, UserMixin):
     image_file = Column(String(20), nullable=False, default='default.jpg')
     password = Column(String(60), nullable=False)
     posts = relationship('Post', backref='author', lazy=True)
+
+    def get_reset_token(self, expires_sec=1800):
+        s = Serializer(SECRET_KEY, expires_sec)
+        return s.dumps({'user_id': self.id}).decode('utf-8')
+
+    @staticmethod
+    def verify_reset_token(token):
+        s = Serializer(SECRET_KEY)
+        try:
+            user_id = s.loads(token)['user_id']
+        except:
+            return None
+        return session.query(User).get(user_id)
 
     def __repr__(self):
         return "User('{}', '{}', '{}')".format(self.username,self.email,self.image_file)
