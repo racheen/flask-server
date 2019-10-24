@@ -24,7 +24,7 @@ def post(post_id):
     if post:
         return render_template('post.html',title=post.title,post=post)
     else:
-        return render_template("404.html")
+        return render_template("errors/404.html")
 
 @posts.route("/post/<int:post_id>/update", methods=['POST','GET'])
 @login_required
@@ -32,7 +32,7 @@ def update_post(post_id):
     post = session.query(Post).get(post_id)
     if post:
         if post.author != current_user:
-            return render_template("error.html", error = '403')
+            return render_template("errors/403.html")
         form = PostForm()
         if form.validate_on_submit():
             post.title = form.title.data
@@ -45,7 +45,7 @@ def update_post(post_id):
             form.content.data=post.content
         return render_template('create_post.html', title='Update Post', form=form, legend="Update Post")
     else:
-        return render_template("error.html", error = '404')
+        return render_template("errors/404.html")
 
 @posts.route("/post/<int:post_id>/delete", methods=['POST'])
 @login_required
@@ -53,10 +53,10 @@ def delete_post(post_id):
     post = session.query(Post).get(post_id)
     if post:
         if post.author != current_user:
-            return render_template("error.html", error = '403')
+            return render_template("errors/403.html")
         session.delete(post)
         session.commit()
         flash('Your post has been deleted!', 'success')
         return redirect(url_for('main.home'))
     else:
-        return render_template("error.html", error = '404')
+        return render_template("errors/404.html")

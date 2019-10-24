@@ -74,11 +74,11 @@ def user_posts(username):
     page = request.args.get('page',1,type=int)
     user = session.query(User).filter_by(username=username).first()
     if not user:
-        return render_template("error.html", error = '404')
+        return render_template("errors/404.html")
     query = session.query(Post).filter_by(author=user).order_by(Post.date_posted.desc())
     posts = Paginator(query, 5)
     if page > posts.pages_range[-1]:
-        return render_template("error.html", error = '404')
+        return render_template("errors/404.html")
     posts_page = posts.page(page)
     show_pages = pagination(page, posts.pages_range)
     return render_template('user_posts.html', query=query, posts_page=posts_page, posts=posts, show_pages=show_pages, user=user)

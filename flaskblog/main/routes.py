@@ -13,7 +13,7 @@ def home():
     query = session.query(Post).order_by(Post.date_posted.desc())
     posts = Paginator(query, 5)
     if page > posts.pages_range[-1]:
-        return render_template("error.html", error = '404')
+        return render_template("errors/404.html")
     posts_page = posts.page(page)
     show_pages = pagination(page, posts.pages_range)
     return render_template('home.html', posts_page=posts_page, posts=posts, show_pages=show_pages)
