@@ -22,11 +22,11 @@ class User(Base, UserMixin):
     confirmed_email = Column(Boolean, nullable=False, default=False,)
     posts = relationship('Post', backref='author', lazy=True)
 
-    def get_confirm_token(self, expires_sec=1800):
+    def get_confirm_token(self, expires_sec=3600):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
     
-    def get_reset_token(self, expires_sec=1800):
+    def get_reset_token(self, expires_sec=600):
         s = Serializer(current_app.config['SECRET_KEY'], expires_sec)
         return s.dumps({'user_id': self.id}).decode('utf-8')
 

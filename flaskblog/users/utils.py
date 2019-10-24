@@ -45,7 +45,7 @@ def send_confirm_email(user):
     msg.body = ''' To confirm your email, visit the following link:
 {}
 
-If you did not make this account then simple ignore this email and the account will be deleted.
+This link will expire in an hour.
                 '''.format(url_for('users.confirm_email',token=token, _external=True))
     mail.send(msg)
 
@@ -55,6 +55,6 @@ def send_reset_email(user):
     msg.body = ''' To reset your password, visit the following link:
 {}
 
-If you did not make this request then simple ignore this email and no changes will be made.
+If you did not make this request then simple ignore this email and no changes will be made. This link will expire in 10 mins.
                 '''.format(url_for('users.reset_token',token=token, _external=True))
     mail.send(msg)
