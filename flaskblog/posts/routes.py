@@ -9,6 +9,10 @@ posts = Blueprint('posts',__name__)
 @posts.route("/post/new", methods=['POST','GET'])
 @login_required
 def new_post():
+    print current_user.confirmed_email
+    if current_user.confirmed_email == False:
+        flash('Please confirm your email first before you can create a post.', 'info')
+        return redirect(url_for('main.home'))
     form = PostForm()
     if form.validate_on_submit():
         post = Post(title=form.title.data, content=form.content.data, author=current_user)

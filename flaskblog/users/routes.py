@@ -7,7 +7,7 @@ from flaskblog import bcrypt, mail
 from flaskblog.models import User, Post
 from flaskblog.database import session
 from flaskblog.users.forms import RegistrationForm, LoginForm, UpdateAccountForm, RequestResetForm, ResetPasswordForm
-from flaskblog.users.utils import pagination, save_picture, send_reset_email
+from flaskblog.users.utils import pagination, save_picture, send_reset_email, send_confirm_email
 
 users = Blueprint('users',__name__)
 
@@ -22,6 +22,7 @@ def register():
         session.add(user)
         session.commit()
         # flash('Account created for {}!'.format(form.username.data), 'success')
+        send_confirm_email(user)
         flash('Your account has been created! You are now able to log in', 'success')
         return redirect(url_for('users.login'))
     return render_template('register.html', title='Register', form=form)
@@ -29,7 +30,7 @@ def register():
 @users.route("/login", methods=['POST','GET'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('main.home'))
+        return redirect(url_for('users.login'))
     form = LoginForm()
     if form.validate_on_submit():
         user =  session.query(User).filter_by(email=form.email.data).first()
@@ -67,7 +68,25 @@ def account():
         form.username.data = current_user.username
         form.email.data = current_user.email
     image_file = url_for('static', filename='profile_pics/' + current_user.image_file)
-    return render_template('account.html', title='Account', image_file=image_file, form=form)
+    return render_template('account.html', title='Account', image_file=image_file, form=form, confirm_email=current_user.confirmed_email)
+
+@users.route("/resend_confirm_email")
+@login_required
+def resend_confirm_email():
+    send_confirm_email(current_user)
+    flash('An email has been sent. Check your inbox.','success')
+    return redirect(url_for('users.account'))
+
+@users.route("/confirm_email/<token>", methods=['GET','POST'])
+def confirm_email(token):
+    user = User.verify_confirm_email(token)
+    if user is None:
+        flash('That is an invalid or expired token','warning')
+        return redirect(url_for('main.home'))
+    user.confirmed_email = True
+    session.commit()
+    flash('Email has been confirmed.','success')
+    return redirect(url_for('main.home'))
 
 @users.route("/user/<string:username>")
 def user_posts(username):

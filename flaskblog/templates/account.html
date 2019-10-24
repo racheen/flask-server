@@ -37,6 +37,9 @@
                     {% else %}
                         {{ form.email(class="form-control form-control-lg") }}
                     {% endif %}
+                    {% if confirm_email == False %}
+                        <p class="m-0"><a class="text-success" href="{{ url_for('users.resend_confirm_email') }}">Click here</a> to resend the confirm email</p>
+                    {% endif %}
                 </div>
                 <div class="form-group">
                     {{ form.picture.label() }}

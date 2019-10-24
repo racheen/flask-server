@@ -39,6 +39,16 @@ def save_picture(form_picture):
         i.save(picture_path)
     return picture_fn
 
+def send_confirm_email(user):
+    token = user.get_confirm_token()
+    msg = Message(subject='Confirm Email', sender='noreply@demo.com', recipients=[user.email])
+    msg.body = ''' To confirm your email, visit the following link:
+{}
+
+If you did not make this account then simple ignore this email and the account will be deleted.
+                '''.format(url_for('users.confirm_email',token=token, _external=True))
+    mail.send(msg)
+
 def send_reset_email(user):
     token = user.get_reset_token()
     msg = Message(subject='Password Reset Request', sender='noreply@demo.com', recipients=[user.email])
