@@ -1,11 +1,11 @@
-from config import DATABASE_URI
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
+from config import Config
 
 Base = declarative_base()
 
-engine = create_engine(DATABASE_URI,echo=False, connect_args={'check_same_thread': False})
+engine = create_engine(Config.DATABASE_URI,echo=False, connect_args={'check_same_thread': False})
 Base.metadata.bind = engine
 DBSession = sessionmaker(autocommit=False,autoflush=False,bind=engine)
 session = DBSession()
