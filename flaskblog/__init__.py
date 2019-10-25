@@ -1,17 +1,15 @@
 from flask import Flask
-# from config import SECRET_KEY, MAIL_PASS, MAIL_SERVER, MAIL_PORT, MAIL_USE_SSL, MAIL_USER, MAIL_USE_TLS, DATABASE_URI
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
-from flaskblog.database import init_db
 from flask_mail import Mail
 from flaskblog.config import Config
+from flask_sqlalchemy import SQLAlchemy
 
 bcrypt = Bcrypt()
 login_manager = LoginManager()
 login_manager.login_view = 'users.login'
 login_manager.login_message_category = 'info'
 mail = Mail()
-init_db()
 
 def create_app(config_class=Config):
     app = Flask(__name__)

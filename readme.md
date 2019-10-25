@@ -6,6 +6,6 @@ This is a simple project using Python-Flask followed from [Flask Tutorials](http
   * Build the application through executing python run.py
   * You can also open the application using the link <https://flask-server38.herokuapp.com/>
 
-# Changes made
+# Modified features
   * Instead of using _flask_sqlalchemy_ library for my database, I used *_sqlalchemy_*
   * Added _confirm email_ functionality
