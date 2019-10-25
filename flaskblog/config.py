@@ -11,7 +11,7 @@ class Config:
     # MAIL_PASSWORD = 'c9c4b0be481af8'
     SECRET_KEY= os.environ['SECRET_KEY']
     DATABASE_URI= os.environ['DATABASE_URI']
-    MAIL_SERVER = os.environ['MAIL_SERVER']'
+    MAIL_SERVER = os.environ['MAIL_SERVER']
     MAIL_PORT = os.environ['MAIL_PORT']
     MAIL_USE_TLS = os.environ['MAIL_USE_TLS']
     MAIL_USE_SSL = os.environ['MAIL_USE_SSL']
