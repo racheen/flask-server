@@ -2,6 +2,7 @@ astroid==1.6.5
 backports.functools-lru-cache==1.5
 bcrypt==3.1.7
 blinker==1.4
+boto==2.49.0
 CacheControl==0.12.5
 cachetools==3.1.0
 certifi==2019.3.9
@@ -50,6 +51,7 @@ oauth2client==3.0.0
 Pillow==6.2.1
 ply==3.8
 protobuf==3.7.1
+psycopg2==2.8.4
 pyasn1==0.4.5
 pyasn1-modules==0.2.4
 pycparser==2.19
